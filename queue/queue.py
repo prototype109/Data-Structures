@@ -17,8 +17,7 @@ import sys
 sys.path.append('../doubly_linked_list')
 from doubly_linked_list import DoublyLinkedList
 
-test = DoublyLinkedList()
-test.add_to_head(3)
+
 # class Queue:
 #     def __init__(self):
 #         self.size = 0
