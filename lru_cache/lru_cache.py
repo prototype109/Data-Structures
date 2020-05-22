@@ -1,3 +1,6 @@
+import sys
+sys.path.append('../doubly_linked_list')
+from doubly_linked_list import DoublyLinkedList
 class LRUCache:
     """
     Our LRUCache class keeps track of the max number of nodes it
@@ -7,7 +10,10 @@ class LRUCache:
     to every node stored in the cache.
     """
     def __init__(self, limit=10):
-        pass
+        self.limit = limit
+        self.size = 0
+        self.dll = DoublyLinkedList()
+        self.storage_dictionary = {}
 
     """
     Retrieves the value associated with the given key. Also
@@ -17,7 +23,15 @@ class LRUCache:
     key-value pair doesn't exist in the cache.
     """
     def get(self, key):
-        pass
+        if key in self.storage_dictionary.keys():
+            current_node = self.dll.head
+            while current_node:
+                if key in current_node.value.keys():
+                    self.dll.move_to_front(current_node)
+                current_node = current_node.next
+            return self.storage_dictionary[key]
+        else:
+            return None
 
     """
     Adds the given key-value pair to the cache. The newly-
@@ -30,4 +44,21 @@ class LRUCache:
     the newly-specified value.
     """
     def set(self, key, value):
-        pass
+        if key in self.storage_dictionary.keys():
+            current_node = self.dll.head
+            while current_node:
+                if key in current_node.value.keys():
+                    current_node.value[key] = value
+                    self.dll.move_to_front(current_node)
+                current_node = current_node.next
+            self.storage_dictionary.update({key: value})
+        elif self.size > self.limit - 1:
+            removed_key = list(self.dll.remove_from_tail().keys())[0]
+            self.storage_dictionary.pop(removed_key)
+            self.dll.add_to_head({key: value})
+            self.storage_dictionary.update({key: value})
+        else:
+            self.dll.add_to_head({key: value})
+            self.storage_dictionary.update({key: value})
+            self.size +=1
+            print(f'SIZE: {self.size}, LIMIT: {self.limit}')
