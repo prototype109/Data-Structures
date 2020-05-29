@@ -1,3 +1,9 @@
+import sys
+sys.path.append('../queue')
+sys.path.append('../stack')
+from queue import Queue
+from stack import Stack
+
 """
 Binary search trees are a data structure that enforce an ordering over 
 the data they store. That ordering in turn makes it a lot more efficient 
@@ -128,24 +134,64 @@ class BSTNode:
 
     # Call the function `fn` on the value of each node
     def for_each(self, fn):
-        pass
+        fn(self.value)
+
+        if self.left:
+            self.left.for_each(fn)
+
+        if self.right:
+            self.right.for_each(fn)
 
     # Part 2 -----------------------
+    
 
     # Print all the values in order from low to high
     # Hint:  Use a recursive, depth first traversal
     def in_order_print(self, node):
-        pass
+
+        if node.left:
+            node.in_order_print(node.left)
+            
+        print(node.value)
+
+        if node.right:
+            node.in_order_print(node.right)
+
+
 
     # Print the value of every node, starting with the given node,
     # in an iterative breadth first traversal
     def bft_print(self, node):
-        pass
+        queue = Queue()
+
+        queue.enqueue(node)
+
+        while len(queue) > 0:
+            current_node = queue.dequeue()
+            print(current_node.value)
+
+            if current_node.right:
+                queue.enqueue(current_node.right)
+
+            if current_node.left:
+                queue.enqueue(current_node.left)
 
     # Print the value of every node, starting with the given node,
     # in an iterative depth first traversal
     def dft_print(self, node):
-        pass
+        stack = Stack()
+
+        stack.push(node)
+
+        while len(stack) > 0:
+            current_node = stack.pop()
+            print(current_node.value)
+
+            if current_node.right:
+                stack.push(current_node.right)
+
+            if current_node.left:
+                stack.push(current_node.left)
 
     # Stretch Goals -------------------------
     # Note: Research may be required
@@ -156,4 +202,4 @@ class BSTNode:
 
     # Print Post-order recursive DFT
     def post_order_dft(self, node):
-        pass
+        pass 
